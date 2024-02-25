@@ -16,7 +16,7 @@ while (true)
 
 
 Console.WriteLine("Connecting to server");
-await ws.ConnectAsync(new Uri($"ws://localhost:6979/ws?name={name}"), CancellationToken.None);
+await ws.ConnectAsync(new Uri($"ws://localhost:6979/position/ws?name={name}"), CancellationToken.None);
 Console.WriteLine("Connected!");
 
 var receiveTask = Task.Run(async () =>

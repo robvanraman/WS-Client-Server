@@ -29,7 +29,7 @@ public class Program
 
         var app = builder.Build();
         app.UseWebSockets();
-        app.Map("/ws", async context =>
+        app.Map("/position/ws", async context =>
         {
             if (context.WebSockets.IsWebSocketRequest)
             {
@@ -49,7 +49,17 @@ public class Program
                         if (result.MessageType == WebSocketMessageType.Text)
                         {
                             string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
-                            await Broadcast(curName + ": " + message);
+                            if (message == "cusips")
+                            {
+                                for (int i = 0; i < 15; i++)
+                                {
+                                    await Broadcast("cusip" + i.ToString());
+                                }
+                            }
+                            else
+                            {
+                                await Broadcast(curName + ": " + message);
+                            }
                         }
                         else if (result.MessageType == WebSocketMessageType.Close || ws.State == WebSocketState.Aborted)
                         {
@@ -104,7 +114,7 @@ public class Program
 
         var app = builder.Build();
         app.UseWebSockets();
-        app.Map("/ws", async context =>
+        app.Map("/position/ws", async context =>
         {
             if (context.WebSockets.IsWebSocketRequest)
             {
@@ -121,8 +131,21 @@ public class Program
                         if (result.MessageType == WebSocketMessageType.Text)
                         {
                             string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
+
+                            if (message == "cusips")
+                            {
+                                for (int i = 0; i < 15; i++)
+                                {
+                                    await Broadcast("cusip" + i.ToString());
+                                }
+                            }
+                            else
+                            {
+                                await Broadcast(curName + ": " + message);
+                            }
+
                             names.Add(message);
-                            await Broadcast(curName + ": " + message);
+                            
                         }
                         else if (result.MessageType == WebSocketMessageType.Close || ws.State == WebSocketState.Aborted)
                         {
